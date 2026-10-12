@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zigbee IDS Dashboard</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Socket.IO -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body { background-color: #f8f9fa; }
+        .card { border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .alert-row { font-weight: bold; }
+        .alert-Replay { color: #dc3545; } /* Red */
+        .alert-Jamming { color: #dc3545; } /* Red */
+        .alert-Rogue { color: #6f42c1; } /* Purple */
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark mb-4">
+    <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Zigbee Intrusion Detection System</span>
+        <span class="badge bg-success" id="connection-status">Live</span>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <!-- Live Stats Row -->
+    <div class="row text-center">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white p-3">
+                <h5>Total Packets Captured</h5>
+                <h2 id="total-packets">0</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-danger text-white p-3">
+                <h5>Confirmed Threats</h5>
+                <h2 id="total-alerts">0</h2>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white p-3">
+                <h5>Whitelisted Devices</h5>
+                <h2 id="active-devices">0</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Forensic Alert Log -->
+        <div class="col-md-7">
+            <div class="card p-3">
+                <h4 class="mb-3">Real-Time Threat Alerts</h4>
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Timestamp</th>
+                                <th>Attack Type</th>
+                                <th>Source MAC</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody id="alert-table-body">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Traffic Graph -->
+        <div class="col-md-5">
+            <div class="card p-3">
+                <h4 class="mb-3">Network Traffic Rate</h4>
+                <canvas id="trafficChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Logic -->
+<script>
+    // 1. Initialize WebSockets for Live Updates
+    const socket = io();
+    
+    socket.on('connect', function() {
+        document.getElementById('connection-status').className = 'badge bg-success';
+        document.getElementById('connection-status').innerText = 'Connected';
+    });
+
+    socket.on('disconnect', function() {
+        document.getElementById('connection-status').className = 'badge bg-danger';
+        document.getElementById('connection-status').innerText = 'Disconnected';
+    });
+
+    // 2. Fetch Initial Database Statistics
+    function loadStats() {
+        fetch('/api/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('total-packets').innerText = data.total_packets;
+                document.getElementById('total-alerts').innerText = data.total_alerts;
+                document.getElementById('active-devices').innerText = data.whitelisted_devices;
+            });
+    }
+
+    // 3. Fetch Initial Forensic Alert History
+    function loadAlerts() {
+        fetch('/api/alerts')
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.getElementById('alert-table-body');
+                tbody.innerHTML = ''; 
+                data.forEach(alert => {
+                    let row = `<tr class="alert-row alert-${alert.attack_type.split(' ')[0]}">
+                        <td>${alert.timestamp}</td>
+                        <td>${alert.attack_type}</td>
+                        <td>${alert.source_mac}</td>
+                        <td>${alert.description}</td>
+                    </tr>`;
+                    tbody.innerHTML += row;
+                });
+            });
+    }
+
+    // 4. Initialize Chart.js Traffic Graph
+    const ctx = document.getElementById('trafficChart').getContext('2d');
+    const trafficChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['10s', '8s', '6s', '4s', '2s', 'Now'],
+            datasets: [{
+                label: 'Packets / Sec',
+                data: [0, 0, 0, 0, 0, 0],
+                borderColor: '#0d6efd',
+                tension: 0.4,
+                fill: true,
+                backgroundColor: 'rgba(13, 110, 253, 0.1)'
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: { y: { beginAtZero: true } }
+        }
+    });
+
+    // Initial Load
+    loadStats();
+    loadAlerts();
+
+    // In a live scenario, you would add socket listeners here to update the chart 
+    // and tables dynamically when a 'new_packet' or 'new_alert' event is emitted from app.py.
+</script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
