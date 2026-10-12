@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Zigbee IDS Dashboard
 
 A Windows-based prototype for monitoring Zigbee and Zigbee2MQTT activity. It combines a Flask Socket.IO dashboard, SQLite event store, IDS engine, and local attack simulation tools.
@@ -64,3 +65,7 @@ No license has been selected. Add one before inviting reuse or redistribution.
 
 
 
+=======
+# Intrusion-detection-system-for-zigbee
+A low-cost, real-time Intrusion Detection System (IDS) for Zigbee smart home and IoT networks. Uses a CC2531 USB dongle in promiscuous mode with a Python-based analysis engine to detect Replay, Jamming, and Rogue Device attacks.
+>>>>>>> 61f56b17555fdfe3182832a7ed6ab966c7b0726b
