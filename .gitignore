@@ -20,3 +20,4 @@ Thumbs.db
 .vscode/
 .idea/
 RESET-DATABASE-powershell.txt
+*.zip
