@@ -1,6 +1,0 @@
-Flask
-Flask-SocketIO
-python-socketio
-scapy
-colorama
-pywin32
