@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" font-family="Segoe UI, Arial, sans-serif">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#455a64"/></marker>
+<style>.b{fill:#fff;stroke:#455a64;stroke-width:1.5;rx:8}.t{font-size:14px;fill:#1c2b33;text-anchor:middle}.s{font-size:11px;fill:#546e7a;text-anchor:middle}.h{font-size:12px;font-weight:600;fill:#455a64}.l{stroke:#455a64;stroke-width:1.6;fill:none;marker-end:url(#a)}</style></defs>
+<rect width="960" height="540" fill="#f6f8fa"/>
+<text x="480" y="30" class="t" style="font-size:18px;font-weight:600">Zigbee IDS architecture</text>
+<text x="40" y="62" class="h">ZIGBEE NETWORK</text>
+<rect x="40" y="72" width="170" height="64" class="b"/><text x="125" y="100" class="t">Sonoff SNZB-02D</text><text x="125" y="120" class="s">temp/humidity sensor</text>
+<rect x="260" y="72" width="170" height="64" class="b"/><text x="345" y="100" class="t">Sonoff ZBDongle-E</text><text x="345" y="120" class="s">coordinator, channel 15</text>
+<rect x="480" y="72" width="170" height="64" class="b"/><text x="565" y="100" class="t">Zigbee2MQTT</text><text x="565" y="120" class="s">v2.14.1</text>
+<rect x="700" y="72" width="220" height="64" class="b"/><text x="810" y="100" class="t">Mosquitto</text><text x="810" y="120" class="s">MQTT broker :1883</text>
+<path class="l" d="M210 104H258"/><path class="l" d="M430 104H478"/><path class="l" d="M650 104H698"/>
+<text x="40" y="196" class="h">SNIFFING</text>
+<rect x="40" y="206" width="170" height="64" class="b"/><text x="125" y="234" class="t">CC2531 sniffer</text><text x="125" y="254" class="s">sniffer firmware</text>
+<rect x="260" y="206" width="170" height="64" class="b"/><text x="345" y="234" class="t">TI Packet Converter</text><text x="345" y="254" class="s">pipe</text>
+<rect x="480" y="206" width="170" height="64" class="b"/><text x="565" y="234" class="t">Wireshark</text><text x="565" y="254" class="s">live frame analysis</text>
+<path class="l" d="M210 238H258"/><path class="l" d="M430 238H478"/>
+<path d="M125 136V204" stroke="#90a4ae" stroke-width="1.4" stroke-dasharray="5 4" fill="none"/>
+<text x="133" y="175" class="s" style="text-anchor:start">radio traffic observed</text>
+<text x="40" y="330" class="h">DETECTION AND DASHBOARD</text>
+<rect x="40" y="340" width="190" height="64" class="b" style="stroke-dasharray:5 4"/><text x="135" y="368" class="t">Attack simulators</text><text x="135" y="384" class="s">attack_tool.py</text><text x="135" y="398" class="s">simulate_attacks.py</text>
+<rect x="300" y="340" width="190" height="64" class="b" style="fill:#e3f2fd;stroke:#1565c0"/><text x="395" y="368" class="t">Detection engine</text><text x="395" y="388" class="s">replay, rogue device,</text><text x="395" y="400" class="s">sensor-reset burst, flood</text>
+<rect x="560" y="340" width="150" height="64" class="b"/><text x="635" y="368" class="t">SQLite</text><text x="635" y="388" class="s">events, alerts, whitelist</text>
+<rect x="770" y="340" width="150" height="64" class="b"/><text x="845" y="368" class="t">Flask + Socket.IO</text><text x="845" y="388" class="s">live dashboard :5000</text>
+<path class="l" d="M230 372H298"/><path class="l" d="M490 372H558"/><path class="l" d="M710 372H768"/>
+<path class="l" d="M810 136V300H395V338"/>
+<text x="600" y="294" class="s">MQTT sensor messages</text>
+<path d="M845 340V318" stroke="none"/>
+<rect x="770" y="450" width="150" height="46" class="b" style="fill:#fff8e1;stroke:#f9a825"/><text x="845" y="478" class="t">Analyst / browser</text>
+<path class="l" d="M845 404V448"/>
+<text x="40" y="470" class="s" style="text-anchor:start">Dashed box: local test traffic only. Run it on your own network.</text>
+</svg>
